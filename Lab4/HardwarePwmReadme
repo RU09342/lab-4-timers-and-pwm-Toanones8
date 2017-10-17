@@ -3,7 +3,7 @@ TI from Resource Explorer was used to make help code this project.
 
 
 # HARDWARE PWM
-This lab required to use hardware PWM to make an lee=d blink for the MSP430 boards. To do this multiple pieces of code where needed. Each board had LEDS and buttons connected to different pins. 
+This lab required to use hardware PWM to make an led blink for the MSP430 boards. To do this multiple pieces of code where needed. Each board had LEDS and buttons connected to different pins. 
 The code for all 5 boards had the same header file. This file was the #include<msp430.h>. This contains all the built in functions for the msp430.
 Inside the void function the watchdog timer has to be stopped,this is done by
 the code WDTCTL=WDTPW +WDTHOLD. This code makes sure the processor is not stuck in an infinite
@@ -43,13 +43,17 @@ P1IFG &= ~BIT3; // Clear P1.3
  __bis_SR_register(GIE); // Enable all interrupts
  
  #BUTTON INTERRUPT
- #pragma vector=PORT1_VECTOR //Allow interrupt for button P.13
-__interrupt void Port_1(void)
+#pragma vector=PORT1_VECTOR
+__interrupt void PORT_1(void)
 {
-    P1OUT ^= BIT0;  // Toggle P1.0
-    P1IFG &= ~BIT3; // P1.3 interrupt flag cleared
-}
+  switch(button)       //if button is off turn on.
+  {case 0: button=1;
+  break;
+  case 1: button=0;   //if button is on turn off
+  break;
+  }
 
+}
 #DIFFERENCES IN BOARDS
 Besides the difference in LEDS and BUTTON pins, one piece of code is different for one
 of the boards. The code below is needed for the 5994.
